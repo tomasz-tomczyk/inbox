@@ -7,22 +7,35 @@ defmodule Inbox.Router do
   ```elixir
     pipeline :api do
       plug :accepts, ["json"]
-      forward "/inbox", Inbox.Router
+      forward("/inbox", Inbox.Router,
+        adapter: Inbox.Adapter.Postmark,
+        handler: MyApp.Processor
+      )
     end
   ```
   """
 
-  use Plug.Router
-  plug(Plug.Logger, log: :debug)
+  import Plug.Conn
+  @behaviour Plug
 
-  plug(:match)
-  plug(:dispatch)
+  @impl true
+  def init(opts) do
+    handler = Keyword.fetch!(opts, :handler)
+    adapter = Keyword.fetch!(opts, :adapter)
 
-  get "/inbound" do
-    conn |> send_resp(200, "inbound")
+    {adapter, handler}
   end
 
-  match _ do
-    conn |> send_resp(404, "not_found")
+  @impl true
+  def call(conn, opts) do
+    {adapter, handler} = opts
+
+    case adapter.call(conn, handler) do
+      {:ok, conn} ->
+        conn |> send_resp(:ok, "ok") |> halt()
+
+      {:error, conn} ->
+        conn |> send_resp(500, "error") |> halt()
+    end
   end
 end

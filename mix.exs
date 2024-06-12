@@ -35,6 +35,8 @@ defmodule Inbox.MixProject do
   defp deps do
     [
       {:bandit, "~> 1.0"},
+      {:jason, "~> 1.4"},
+      {:timex, "~> 3.0"},
       {:ex_doc, "~> 0.31", only: :dev, runtime: false},
       {:excoveralls, "~> 0.18", only: :test}
     ]
