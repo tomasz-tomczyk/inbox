@@ -1,13 +1,26 @@
 defmodule Inbox.MixProject do
   use Mix.Project
+  @version "0.1.0"
+  @repo_url "https://github.com/tomasz-tomczyk/inbox"
 
   def project do
     [
       app: :inbox,
-      version: "0.1.0",
+      version: @version,
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+
+      # Tests
+      test_coverage: [tool: ExCoveralls],
+
+      # Hex
+      package: package(),
+      description: "Plug-based inbound email handling.",
+      deps: deps(),
+
+      # Docs
+      name: "Inbox",
+      docs: docs()
     ]
   end
 
@@ -21,7 +34,31 @@ defmodule Inbox.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:bandit, "~> 1.0"}
+      {:bandit, "~> 1.0"},
+      {:ex_doc, "~> 0.31", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.18", only: :test}
+    ]
+  end
+
+  defp package do
+    [
+      maintainers: ["Tomasz Tomczyk"],
+      licenses: ["Apache-2.0"],
+      links: %{"GitHub" => @repo_url}
+    ]
+  end
+
+  defp docs do
+    [
+      main: "Inbox",
+      extras: [
+        "CHANGELOG.md": [title: "Changelog"],
+        "LICENSE.md": [title: "License"]
+      ],
+      source_ref: "v#{@version}",
+      source_url: @repo_url,
+      formatters: ["html"],
+      skip_undefined_reference_warnings_on: ["CHANGELOG.md"]
     ]
   end
 end
