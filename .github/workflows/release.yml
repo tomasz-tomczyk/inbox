@@ -5,12 +5,18 @@ on:
 
 jobs:
   publish:
+    name: Publish to hex.pm
     runs-on: ubuntu-latest
     steps:
-      - name: Check out
-        uses: actions/checkout@v3
-
-      - name: Publish to Hex.pm
-        uses: erlangpack/github-action@v3
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        with:
+          "elixir-version": "1.16"
+          "otp-version": "26.2"
+      - name: Fetch Mix dependencies
+        run: mix deps.get
+      - name: Publish package
+        run: |
+          mix hex.publish --yes
         env:
           HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
