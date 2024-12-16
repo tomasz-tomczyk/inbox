@@ -11,7 +11,7 @@ defmodule Inbox.Adapter.Postmark do
     message = %Inbox.Message{
       id: params["MessageID"],
       to: parse_to(params["ToFull"]),
-      from: params["From"],
+      from: {params["FromFull"]["Name"], params["FromFull"]["Email"]},
       subject: params["Subject"],
       html: params["HtmlBody"],
       text: params["TextBody"],

@@ -6,7 +6,7 @@ defmodule Inbox.Message do
   @type t :: %__MODULE__{
           id: String.t(),
           to: [{String.t(), String.t()}] | nil,
-          from: String.t(),
+          from: [{String.t(), String.t()}],
           subject: String.t() | nil,
           html: String.t() | nil,
           text: String.t() | nil,

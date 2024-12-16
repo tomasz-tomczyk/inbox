@@ -12,7 +12,7 @@ defmodule Inbox.Adapter.PostmarkTest do
     assert %Inbox.Message{
              id: "test-12345",
              to: [{"", "test-12345@inbound.postmarkapp.com"}],
-             from: "john@doe.com",
+             from: {"John Doe", "john@doe.com"},
              subject: "Hello world!",
              text: "Testing inbound emails\n"
            } = message
