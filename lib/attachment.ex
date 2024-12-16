@@ -4,7 +4,7 @@ defmodule Inbox.Attachment do
   """
 
   @type t :: %__MODULE__{
-          id: String.t(),
+          id: String.t() | nil,
           filename: String.t(),
           content_type: String.t(),
           content_length: number(),

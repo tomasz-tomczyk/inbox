@@ -33,6 +33,7 @@ defmodule Inbox.Adapter.Postmark do
     attachments
     |> Enum.map(fn attachment ->
       %Inbox.Attachment{
+        id: attachment["ContentID"],
         filename: attachment["Name"],
         content_type: attachment["ContentType"],
         content_length: attachment["ContentLength"],

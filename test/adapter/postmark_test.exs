@@ -76,4 +76,33 @@ defmodule Inbox.Adapter.PostmarkTest do
              content_length: 4
            } = attachment
   end
+
+  test "processes inline attachments" do
+    body =
+      Inbox.Test.postmark(%{
+        "Attachments" => [
+          %{
+            "ContentLength" => 4,
+            "ContentType" => "image/png",
+            "Name" => "image.png",
+            "Content" => "dGVzdA==",
+            "ContentID" => "88597016-51b0-47ab-80ee-bef05f3178ef"
+          }
+        ]
+      })
+
+    Inbox.TestRouter.call(Inbox.Adapter.Postmark, body)
+
+    assert_received({:message, message})
+
+    assert %Inbox.Message{attachments: [attachment]} = message
+
+    assert %Inbox.Attachment{
+             id: "88597016-51b0-47ab-80ee-bef05f3178ef",
+             content_type: "image/png",
+             filename: "image.png",
+             data: "test",
+             content_length: 4
+           } == attachment
+  end
 end
