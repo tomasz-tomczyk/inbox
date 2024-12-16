@@ -112,7 +112,14 @@ defmodule Inbox.Test do
           "Value" => "<CAC6GPT7PKGO0NRtjon3C0_sULPqEkSD=Pw7HwjBS=6iQ_S5EEA@mail.gmail.com>"
         }
       ],
-      "Attachments" => []
+      "Attachments" => [
+        %{
+          "ContentLength" => 4,
+          "ContentType" => "image/png",
+          "Name" => "image.png",
+          "Content" => "dGVzdA=="
+        }
+      ]
     }
     |> Map.merge(data)
   end

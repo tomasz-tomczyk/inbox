@@ -11,6 +11,7 @@ defmodule Inbox.Message do
           html: String.t() | nil,
           text: String.t() | nil,
           timestamp: DateTime.t() | nil,
+          attachments: [Inbox.Attachment.t()] | nil,
           raw: map()
         }
   @enforce_keys [:id, :to]
@@ -22,6 +23,7 @@ defmodule Inbox.Message do
     :html,
     :text,
     :timestamp,
+    :attachments,
     :raw
   ]
 end
