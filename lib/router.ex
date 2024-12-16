@@ -13,6 +13,12 @@ defmodule Inbox.Router do
       )
     end
   ```
+
+  ## Supported options
+
+  * `:adapter` - the adapter module to use
+  * `:handler` - the handler module to use
+  * `:raw` - whether to include the raw message attributes in the `Inbox.Message` struct
   """
 
   import Plug.Conn
@@ -20,17 +26,15 @@ defmodule Inbox.Router do
 
   @impl true
   def init(opts) do
-    handler = Keyword.fetch!(opts, :handler)
-    adapter = Keyword.fetch!(opts, :adapter)
-
-    {adapter, handler}
+    opts
   end
 
   @impl true
   def call(conn, opts) do
-    {adapter, handler} = opts
+    handler = Keyword.fetch!(opts, :handler)
+    adapter = Keyword.fetch!(opts, :adapter)
 
-    case adapter.call(conn, handler) do
+    case adapter.call(conn, handler, opts) do
       {:ok, conn} ->
         conn |> send_resp(:ok, "ok") |> halt()
 

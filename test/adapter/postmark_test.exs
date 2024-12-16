@@ -17,4 +17,47 @@ defmodule Inbox.Adapter.PostmarkTest do
              text: "Testing inbound emails\n"
            } = message
   end
+
+  test "includes the raw message if the option was provided" do
+    body = Inbox.Test.postmark(%{"MessageID" => "test-12345"})
+
+    Inbox.TestRouter.call(Inbox.Adapter.Postmark, body)
+
+    assert_received({:message, message})
+
+    assert %Inbox.Message{raw: nil} = message
+
+    body = Inbox.Test.postmark(%{"MessageID" => "test-12345"})
+
+    Inbox.TestRouter.call(Inbox.Adapter.Postmark, body, raw: true)
+
+    assert_received({:message, message})
+
+    assert %Inbox.Message{raw: raw_attrs} = message
+
+    assert Map.keys(raw_attrs) == [
+             "Attachments",
+             "Bcc",
+             "BccFull",
+             "Cc",
+             "CcFull",
+             "Date",
+             "From",
+             "FromFull",
+             "FromName",
+             "Headers",
+             "HtmlBody",
+             "MailboxHash",
+             "MessageID",
+             "MessageStream",
+             "OriginalRecipient",
+             "ReplyTo",
+             "StrippedTextReply",
+             "Subject",
+             "Tag",
+             "TextBody",
+             "To",
+             "ToFull"
+           ]
+  end
 end

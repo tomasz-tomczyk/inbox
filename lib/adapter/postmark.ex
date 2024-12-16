@@ -7,7 +7,7 @@ defmodule Inbox.Adapter.Postmark do
   @behaviour Inbox.Adapter
 
   @impl Inbox.Adapter
-  def call(%{params: params} = conn, handler) do
+  def call(%{params: params} = conn, handler, opts \\ []) do
     message = %Inbox.Message{
       id: params["MessageID"],
       to: parse_to(params["ToFull"]),
@@ -16,7 +16,7 @@ defmodule Inbox.Adapter.Postmark do
       html: params["HtmlBody"],
       text: params["TextBody"],
       timestamp: Timex.parse!(params["Date"], "{RFC1123}"),
-      raw: params
+      raw: if(opts[:raw], do: params, else: nil)
     }
 
     handler.process(message)
