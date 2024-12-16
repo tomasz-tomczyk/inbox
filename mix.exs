@@ -39,7 +39,8 @@ defmodule Inbox.MixProject do
       {:timex, "~> 3.0"},
       {:tzdata, "~> 1.1"},
       {:ex_doc, "~> 0.31", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.18", only: :test}
+      {:excoveralls, "~> 0.18", only: :test},
+      {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 
