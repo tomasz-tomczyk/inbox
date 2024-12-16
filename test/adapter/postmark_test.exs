@@ -60,4 +60,20 @@ defmodule Inbox.Adapter.PostmarkTest do
              "ToFull"
            ]
   end
+
+  test "processes the attachments" do
+    body = Inbox.Test.postmark(%{"MessageID" => "test-12345"})
+
+    Inbox.TestRouter.call(Inbox.Adapter.Postmark, body)
+
+    assert_received({:message, message})
+
+    assert %Inbox.Message{attachments: [attachment]} = message
+
+    assert %Inbox.Attachment{
+             content_type: "image/png",
+             filename: "image.png",
+             content_length: 4
+           } = attachment
+  end
 end
