@@ -11,15 +11,15 @@ end
 defmodule Inbox.TestRouter do
   use Plug.Test
 
-  def call(adapter, json_body) do
+  def call(adapter, body, opts \\ []) do
     opts =
-      Inbox.Router.init(
+      Keyword.merge(opts,
         adapter: adapter,
         handler: Inbox.TestHandler
       )
 
     conn =
-      conn(:post, "/", json_body)
+      conn(:post, "/", Jason.encode!(body))
       |> put_req_header("content-type", "application/json")
       |> Plug.Parsers.call(
         Plug.Parsers.init(parsers: [:urlencoded, {:json, json_decoder: Jason}])

@@ -3,9 +3,9 @@ defmodule Inbox.Adapter.PostmarkTest do
   doctest Inbox.Adapter.Postmark
 
   test "processes inbound emails" do
-    json_body = Inbox.Test.postmark(%{"MessageID" => "test-12345"}) |> Jason.encode!()
+    body = Inbox.Test.postmark(%{"MessageID" => "test-12345"})
 
-    Inbox.TestRouter.call(Inbox.Adapter.Postmark, json_body)
+    Inbox.TestRouter.call(Inbox.Adapter.Postmark, body)
 
     assert_received({:message, message})
 
