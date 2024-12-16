@@ -14,7 +14,9 @@ defmodule Inbox.Adapter.PostmarkTest do
              to: [{"", "test-12345@inbound.postmarkapp.com"}],
              from: {"John Doe", "john@doe.com"},
              subject: "Hello world!",
-             text: "Testing inbound emails\n"
+             text: "Testing inbound emails\n",
+             html:
+               "<html><head></head><body><div><div><div class=\"\">Testing inbound emails</div></div><div></div><br><div class=\"gmail_signature\"></div></div></body></html>\n"
            } = message
   end
 
